@@ -1,0 +1,6 @@
+# Code owners for nemesis-eval.
+# These owners are automatically requested for review on any pull request.
+# Combined with branch protection (require review from Code Owners), this
+# ensures no change reaches main without the maintainer's review.
+
+*       @LueBangs-coder
