@@ -1,0 +1,26 @@
+name: Nemesis self-check
+
+# Dogfooding: run the Nemesis action against this repository on every change.
+# It also serves as the integration test for action.yml itself.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  nemesis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Run Nemesis against this repo
+        uses: ./
+        with:
+          repo: "."
+          fail-on-detect: "true"

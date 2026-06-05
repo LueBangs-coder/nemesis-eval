@@ -47,7 +47,11 @@ def _print_report(report: EvalReport) -> None:
 
 
 def _run_check(args: argparse.Namespace) -> int:
-    """Build an artifact from a real repo and report any detected failures."""
+    """Build an artifact from a real repo and report any detected failures.
+
+    Returns ``1`` when ``--fail-on-detect`` was given and at least one failure
+    mode fired (so the command can gate CI); ``0`` otherwise.
+    """
     transcript = ""
     if args.transcript is not None:
         transcript = args.transcript.read_text(encoding="utf-8")
@@ -82,6 +86,9 @@ def _run_check(args: argparse.Namespace) -> int:
         print("-" * 72)
         print(f"detectors run: {len(results)}   failures detected: {len(fired)}")
         print("=" * 72)
+
+    if args.fail_on_detect and fired:
+        return 1
     return 0
 
 
@@ -145,6 +152,12 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         default=None,
         help="write a Markdown report to this path instead of printing to stdout",
+    )
+    check_parser.add_argument(
+        "--fail-on-detect",
+        action="store_true",
+        help="exit with a non-zero status if any failure mode is detected "
+        "(use this to gate CI)",
     )
 
     args = parser.parse_args(argv)

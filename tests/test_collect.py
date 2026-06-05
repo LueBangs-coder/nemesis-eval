@@ -114,3 +114,31 @@ def test_cli_check_writes_report(clean_repo: Path, tmp_path: Path) -> None:
     exit_code = main(["check", "--repo", str(clean_repo), "--output", str(out)])
     assert exit_code == 0
     assert out.read_text(encoding="utf-8").startswith("# Nemesis Check Report")
+
+
+def test_cli_check_fail_on_detect_returns_nonzero(clean_repo: Path) -> None:
+    """`--fail-on-detect` makes a detected failure exit non-zero (CI gate)."""
+    (clean_repo / "file.txt").write_text("changed\n", encoding="utf-8")
+    exit_code = main(
+        [
+            "check",
+            "--repo",
+            str(clean_repo),
+            "--claimed-success",
+            "--fail-on-detect",
+        ]
+    )
+    assert exit_code == 1
+
+
+def test_cli_check_fail_on_detect_clean_returns_zero(clean_repo: Path) -> None:
+    """`--fail-on-detect` still exits 0 when nothing fires."""
+    exit_code = main(["check", "--repo", str(clean_repo), "--fail-on-detect"])
+    assert exit_code == 0
+
+
+def test_cli_check_detection_without_flag_returns_zero(clean_repo: Path) -> None:
+    """Without `--fail-on-detect`, a detection is reported but exit stays 0."""
+    (clean_repo / "file.txt").write_text("changed\n", encoding="utf-8")
+    exit_code = main(["check", "--repo", str(clean_repo), "--claimed-success"])
+    assert exit_code == 0
