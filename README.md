@@ -100,6 +100,17 @@ The full list lives in [`data/failure_modes.yaml`](./data/failure_modes.yaml). T
 
 Requires Python 3.11+.
 
+From PyPI (installs the `nemesis` command):
+
+```bash
+pip install nemesis-eval
+```
+
+> The distribution is named **`nemesis-eval`**; the import package and CLI are
+> both **`nemesis`**.
+
+From source, for development:
+
 ```bash
 git clone https://github.com/LueBangs-coder/nemesis-eval.git
 cd nemesis-eval
@@ -140,7 +151,33 @@ It builds the run artifact from **read-only** git state (worktree status,
 branch, HEAD, upstream parity) plus the run context you provide. **Nemesis
 never executes the project's tests or any project code** — you pass the test
 outcome with `--tests-passing`, so pointing it at an untrusted repo is safe.
-Add `--output report.md` to write a Markdown check report.
+Add `--output report.md` to write a Markdown check report. Pass
+`--fail-on-detect` to exit non-zero when any failure mode fires (useful in CI).
+
+### Use it in CI (GitHub Action)
+
+Nemesis ships a composite action so any repository can run a check in its
+workflow. By default it fails the job when a failure mode is detected:
+
+```yaml
+# .github/workflows/nemesis.yml
+name: Nemesis check
+on: [pull_request]
+jobs:
+  nemesis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: LueBangs-coder/nemesis-eval@v0.2.0
+        with:
+          repo: "."
+          fail-on-detect: "true"   # set "false" for report-only
+```
+
+Inputs: `repo`, `transcript`, `claimed-success`, `tests-passing`, `output`,
+`fail-on-detect`, `package-version`, and `python-version`. Leave
+`package-version` empty to use the version bundled with the pinned action ref,
+or set it (e.g. `"0.2.0"`) to install that release from PyPI.
 
 ---
 

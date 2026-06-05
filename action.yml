@@ -1,0 +1,98 @@
+name: "Nemesis check"
+description: >-
+  Run Nemesis detectors against a repository to catch agentic failure modes
+  (e.g. an agent declaring success before verifying the real repo state).
+author: "Luis A. Betancourt"
+
+branding:
+  icon: "shield"
+  color: "red"
+
+inputs:
+  repo:
+    description: "Path to the git repository to inspect."
+    required: false
+    default: "."
+  transcript:
+    description: "Path to a file containing the agent transcript (optional)."
+    required: false
+    default: ""
+  claimed-success:
+    description: "Set to 'true' if the agent declared the task complete."
+    required: false
+    default: "false"
+  tests-passing:
+    description: >-
+      Test outcome to record: 'true', 'false', or '' to omit. Nemesis never
+      runs your tests itself; it only reasons about the outcome you provide.
+    required: false
+    default: ""
+  output:
+    description: "Optional path to write a Markdown report instead of stdout."
+    required: false
+    default: ""
+  fail-on-detect:
+    description: "Fail the action (non-zero exit) when any failure mode fires."
+    required: false
+    default: "true"
+  package-version:
+    description: >-
+      Version of the nemesis-eval package to install from PyPI (e.g. '0.2.0').
+      Leave empty to install the version bundled with this action ref.
+    required: false
+    default: ""
+  python-version:
+    description: "Python version to set up for the run."
+    required: false
+    default: "3.x"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install nemesis-eval
+      shell: bash
+      env:
+        PACKAGE_VERSION: ${{ inputs.package-version }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        python -m pip install --upgrade pip
+        if [ -n "$PACKAGE_VERSION" ]; then
+          python -m pip install --upgrade "nemesis-eval==$PACKAGE_VERSION"
+        else
+          python -m pip install --upgrade "$ACTION_PATH"
+        fi
+
+    - name: Run nemesis check
+      shell: bash
+      env:
+        REPO: ${{ inputs.repo }}
+        TRANSCRIPT: ${{ inputs.transcript }}
+        CLAIMED_SUCCESS: ${{ inputs.claimed-success }}
+        TESTS_PASSING: ${{ inputs.tests-passing }}
+        OUTPUT: ${{ inputs.output }}
+        FAIL_ON_DETECT: ${{ inputs.fail-on-detect }}
+      run: |
+        set -euo pipefail
+        args=(check --repo "$REPO")
+        if [ -n "$TRANSCRIPT" ]; then
+          args+=(--transcript "$TRANSCRIPT")
+        fi
+        if [ "$CLAIMED_SUCCESS" = "true" ]; then
+          args+=(--claimed-success)
+        fi
+        if [ -n "$TESTS_PASSING" ]; then
+          args+=(--tests-passing "$TESTS_PASSING")
+        fi
+        if [ -n "$OUTPUT" ]; then
+          args+=(--output "$OUTPUT")
+        fi
+        if [ "$FAIL_ON_DETECT" = "true" ]; then
+          args+=(--fail-on-detect)
+        fi
+        nemesis "${args[@]}"
