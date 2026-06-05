@@ -1,0 +1,139 @@
+# Pantheon failure-mode catalog — twenty production failures Nemesis detects.
+# Source of truth: BUILD_SPEC.md §Failure mode catalog. Keep this file in sync.
+#
+# Each entry has five fields:
+#   id          — snake_case identifier; matches the FailureMode.id field
+#   name        — human-readable title
+#   category    — one of: verification, state_hygiene, doctrine, scope, skill_design
+#   description — what goes wrong (from Pantheon observation)
+#   fix_rule    — the rule that catches or prevents this failure
+
+# ─── Verification and ground truth ───────────────────────────────────────────
+
+- id: agent_declared_success_too_early
+  name: Agent declared success too early
+  category: verification
+  description: The agent completed its checklist but did not verify the real repo state.
+  fix_rule: Require final proof from the actual checkout, not from the agent transcript.
+
+- id: stale_local_checkout_treated_as_current
+  name: Stale local checkout treated as current
+  category: verification
+  description: The agent relied on old local files instead of the true source-of-truth repo state.
+  fix_rule: Require repo path, branch, HEAD, and upstream verification before starting work.
+
+- id: source_of_truth_ambiguity_across_tools
+  name: Source of truth ambiguity across tools
+  category: verification
+  description: Unclear whether GitHub, local repo, Codex session, or Claude session was authoritative.
+  fix_rule: Declare the canonical checkout as source of truth; all agents verify against it.
+
+- id: github_merge_treated_as_full_success
+  name: GitHub merge treated as full success
+  category: verification
+  description: The process assumed "merged on GitHub" meant the operator's local repo was ready.
+  fix_rule: Remote and local must both be verified.
+
+- id: repo_drift_after_merge
+  name: Repo drift after merge
+  category: verification
+  description: A PR was merged remotely while the local project folder stayed behind.
+  fix_rule: Require local repo parity checks before declaring success.
+
+- id: artifact_presence_not_verified
+  name: Artifact presence not verified
+  category: verification
+  description: Generated files or archives were sometimes missing even when the agent said the task was done.
+  fix_rule: Require expected artifacts to be checked before closeout.
+
+- id: agent_output_not_tied_to_exact_repo_state
+  name: Agent output not tied to exact repo state
+  category: verification
+  description: Reports lacked enough detail to prove what commit or branch was tested.
+  fix_rule: Require final reports to include branch, HEAD, upstream parity, worktree status, and test results.
+
+- id: testing_without_source_verification
+  name: Testing without source verification
+  category: verification
+  description: Tests passed in the wrong folder or on a stale branch.
+  fix_rule: Require source verification before accepting test results.
+
+# ─── State hygiene and closeout ──────────────────────────────────────────────
+
+- id: dirty_worktree_after_closeout
+  name: Dirty worktree after closeout
+  category: state_hygiene
+  description: Modified and untracked files remained after the agent claimed the phase was complete.
+  fix_rule: Clean worktree status as a required closeout gate.
+
+- id: old_session_folders_leaking_files
+  name: Old session folders leaking files
+  category: state_hygiene
+  description: Previous Claude or Codex session folders contained leftover generated files.
+  fix_rule: Stale folder cleanup or explicit archive handling before continuing.
+
+- id: branch_cleanup_not_verified
+  name: Branch cleanup not verified
+  category: state_hygiene
+  description: Branches were merged but not always deleted or confirmed clean.
+  fix_rule: Branch cleanup as part of post-merge closure.
+
+- id: local_status_ignored_before_next_phase
+  name: Local status ignored before next phase
+  category: state_hygiene
+  description: New phases started before confirming the previous phase was truly closed.
+  fix_rule: Block next-phase prompts until closeout checks pass.
+
+- id: untracked_files_appearing_unexpectedly
+  name: Untracked files appearing unexpectedly
+  category: state_hygiene
+  description: Untracked files appeared during closeout and could have been carried forward accidentally.
+  fix_rule: Untracked files must be explained, removed, committed, or archived.
+
+# ─── Doctrine and multi-agent coordination ───────────────────────────────────
+
+- id: missing_root_doctrine_updates
+  name: Missing root doctrine updates
+  category: doctrine
+  description: Skills or harness behavior changed, but root files (CLAUDE.md, AGENTS.md, WORKLOG.md, etc.) were not updated.
+  fix_rule: Mandatory root documentation updates for doctrine changes.
+
+- id: hot_file_conflict_risk
+  name: Hot file conflict risk
+  category: doctrine
+  description: Multiple agents or sessions could touch root doctrine files without coordination.
+  fix_rule: Identify hot files and require phase-gated final reports.
+
+- id: workflow_drift_across_tools
+  name: Workflow drift across tools
+  category: doctrine
+  description: ChatGPT, Claude Code, Codex, Argus, and Janus could each assume different rules.
+  fix_rule: Centralize doctrine into shared root files and reusable handoff standards.
+
+# ─── Scope and specification ─────────────────────────────────────────────────
+
+- id: patch_vs_new_build_confusion
+  name: Patch vs new build confusion
+  category: scope
+  description: Agents tried to patch old repos even when the spec had materially changed.
+  fix_rule: Explicit "NEW BUILD — do not patch" decision gates.
+
+- id: incomplete_implementation_prompts
+  name: Incomplete implementation prompts
+  category: scope
+  description: Partial prompts created ambiguity and inconsistent execution.
+  fix_rule: Complete handoff prompts with exact scope, files, acceptance gates, and stop conditions.
+
+# ─── Skill design and prompt safety ──────────────────────────────────────────
+
+- id: skill_bloat
+  name: Skill bloat
+  category: skill_design
+  description: Agent skills became too large, too project-specific, or overloaded.
+  fix_rule: Enforce small, portable, composable skills with clear gates.
+
+- id: unsafe_audit_probing_language_in_prompts
+  name: Unsafe audit-probing language in prompts
+  category: skill_design
+  description: Some prompts used wording that could be misread as security probing.
+  fix_rule: Public-access-only language and strict run → validate → fix → stop loops.
