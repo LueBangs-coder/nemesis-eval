@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/banner.png" alt="Nemesis — a Python evaluation harness for agentic failure modes" width="100%">
+  <img src="docs/banner.svg" alt="Nemesis — a Python evaluation harness for agentic failure modes" width="100%">
 </p>
 
 <p align="center">
