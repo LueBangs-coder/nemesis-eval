@@ -127,6 +127,21 @@ python -m nemesis eval --output report.md
 
 The report lists, for each failure mode, the true-positive rate, the false-positive rate, and sample evidence for every detection — and links back to the build log.
 
+### Checking a real repository
+
+`nemesis eval` is the self-test against synthetic runs. To run the detectors
+against a **real** repository, use `nemesis check`:
+
+```bash
+python -m nemesis check --repo . --claimed-success --tests-passing false
+```
+
+It builds the run artifact from **read-only** git state (worktree status,
+branch, HEAD, upstream parity) plus the run context you provide. **Nemesis
+never executes the project's tests or any project code** — you pass the test
+outcome with `--tests-passing`, so pointing it at an untrusted repo is safe.
+Add `--output report.md` to write a Markdown check report.
+
 ---
 
 ## Part of something larger
