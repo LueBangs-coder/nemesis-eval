@@ -1,0 +1,84 @@
+name: Release to PyPI
+
+# Publishes nemesis-eval to PyPI when a GitHub Release is published.
+#
+# Security model: PyPI Trusted Publishing (OIDC). There is NO API token and
+# NO secret stored in this repository. The publish job mints a short-lived
+# identity for a single run via OpenID Connect. Configure the trusted
+# publisher once on PyPI (Your account -> Publishing) pointing at:
+#   owner: LueBangs-coder   repo: nemesis-eval
+#   workflow: release.yml    environment: pypi
+
+on:
+  release:
+    types: [published]
+
+# Never run two publishes for the same ref at once.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & verify distributions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+
+      - name: Verify metadata renders on PyPI
+        run: python -m twine check dist/*
+
+      - name: Confirm the build version matches the release tag
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          wheel="$(ls dist/*.whl)"
+          # nemesis_eval-0.2.0-py3-none-any.whl -> 0.2.0
+          build_version="$(basename "$wheel" | cut -d- -f2)"
+          tag_version="${RELEASE_TAG#v}"
+          echo "build=$build_version tag=$tag_version"
+          if [ "$build_version" != "$tag_version" ]; then
+            echo "::error::Release tag ($tag_version) does not match built version ($build_version)."
+            exit 1
+          fi
+
+      - name: Upload distributions as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    # The trusted publisher on PyPI is bound to this environment name.
+    environment:
+      name: pypi
+      url: https://pypi.org/p/nemesis-eval
+    permissions:
+      id-token: write # OIDC token for Trusted Publishing — the only elevated grant.
+    steps:
+      - name: Download the built distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to PyPI via Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
