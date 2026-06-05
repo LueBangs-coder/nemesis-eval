@@ -7,8 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.0] - Unreleased
-
 ### Added
 - **Real-repository adapter** (`nemesis check`): runs the detectors against a
   real repository, building the run artifact from read-only git state
@@ -37,6 +35,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `nemesis eval`: scores every detector against synthetic known-truth runs and
   renders a Markdown report (`--output`).
 
-[Unreleased]: https://github.com/LueBangs-coder/nemesis-eval/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/LueBangs-coder/nemesis-eval/compare/v0.1.0...v0.2.0
+[Unreleased]: https://github.com/LueBangs-coder/nemesis-eval/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/LueBangs-coder/nemesis-eval/releases/tag/v0.1.0
