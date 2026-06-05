@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="682" viewBox="0 0 2048 682" role="img" aria-labelledby="title desc">
+  <title id="title">NEMESIS banner vector approximation</title>
+  <desc id="desc">NEMESIS. She who catches hubris in agents. A Python evaluation harness for agentic failure modes.</desc>
+  <defs>
+    <radialGradient id="bgGlow" cx="77%" cy="51%" r="48%">
+      <stop offset="0%" stop-color="#182a3d"/>
+      <stop offset="45%" stop-color="#07111f"/>
+      <stop offset="100%" stop-color="#030812"/>
+    </radialGradient>
+    <linearGradient id="orangeLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff5f38"/>
+      <stop offset="54%" stop-color="#ff9a32"/>
+      <stop offset="100%" stop-color="#182235" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="textMetal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#dfe6ec"/>
+      <stop offset="100%" stop-color="#aab3bd"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="2048" height="682" fill="#030812"/>
+  <rect x="0" y="0" width="2048" height="682" fill="url(#bgGlow)"/>
+  <g opacity="0.35">
+    <ellipse cx="340" cy="65" rx="255" ry="28" fill="#14538f" filter="url(#softGlow)" transform="rotate(-13 340 65)"/>
+    <ellipse cx="1510" cy="472" rx="350" ry="44" fill="#173d67" filter="url(#softGlow)" transform="rotate(-16 1510 472)"/>
+    <ellipse cx="1895" cy="296" rx="170" ry="36" fill="#7b331f" filter="url(#softGlow)" transform="rotate(-25 1895 296)"/>
+  </g>
+
+  <!-- outer border -->
+  <rect x="31" y="33" width="1986" height="613" rx="0" fill="none" stroke="#c77b45" stroke-width="2"/>
+  <rect x="42" y="42" width="1964" height="591" rx="16" fill="none" stroke="#d9985a" stroke-width="1" opacity="0.55"/>
+  <path d="M31 33 Q62 35 66 69 M2017 33 Q1986 35 1982 69 M31 646 Q62 644 66 610 M2017 646 Q1986 644 1982 610" fill="none" stroke="#ffb066" stroke-width="5" opacity="0.75"/>
+  <path d="M1017 33 l8 -10 l8 10 l-8 10z M1017 646 l8 -10 l8 10 l-8 10z" fill="#e08c51"/>
+
+  <!-- title and copy -->
+  <text x="151" y="296" font-family="Georgia, 'Times New Roman', serif" font-size="176" font-weight="700"
+        letter-spacing="24" fill="url(#textMetal)">NEMESIS</text>
+
+  <line x1="151" y1="358" x2="740" y2="358" stroke="url(#orangeLine)" stroke-width="4"/>
+  <circle cx="738" cy="358" r="6" fill="#ffc77b"/>
+
+  <text x="154" y="450" font-family="Georgia, 'Times New Roman', serif" font-size="59" font-style="italic"
+        fill="#f68b2c">She who catches hubris in agents.</text>
+  <text x="154" y="529" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="38"
+        fill="#c5ced8" opacity="0.92">A Python evaluation harness for agentic failure modes</text>
+
+  <!-- orbital eye logo -->
+  <g transform="translate(1628 328)">
+    <ellipse cx="0" cy="0" rx="272" ry="128" fill="none" stroke="#c96749" stroke-width="3" opacity="0.6"/>
+    <path d="M-285 0 C-205 -110 -82 -143 0 -128 C90 -143 206 -104 285 0 C205 104 90 143 0 128 C-82 143 -205 110 -285 0Z"
+          fill="none" stroke="#d76f45" stroke-width="4"/>
+    <circle cx="0" cy="0" r="86" fill="none" stroke="#d78b4f" stroke-width="2" opacity="0.9"/>
+    <circle cx="0" cy="0" r="47" fill="#0b1119" stroke="#3c2220" stroke-width="2"/>
+    <circle cx="0" cy="0" r="25" fill="#ff9c43" filter="url(#softGlow)"/>
+    <circle cx="0" cy="0" r="10" fill="#fff1c9"/>
+    <line x1="-245" y1="0" x2="245" y2="0" stroke="#dd8a52" stroke-width="1" opacity="0.65"/>
+    <line x1="0" y1="-242" x2="0" y2="242" stroke="#dd8a52" stroke-width="1" opacity="0.55"/>
+    <circle cx="-162" cy="103" r="10" fill="#e8783f" filter="url(#softGlow)"/>
+    <circle cx="167" cy="103" r="10" fill="#e8783f" filter="url(#softGlow)"/>
+    <circle cx="169" cy="-87" r="10" fill="#e8783f" filter="url(#softGlow)"/>
+    <path d="M0 -236 l7 13 l13 7 l-13 7 l-7 13 l-7 -13 l-13 -7 l13 -7z" fill="#f5ad68"/>
+    <path d="M0 236 l5 10 l10 5 l-10 5 l-5 10 l-5 -10 l-10 -5 l10 -5z" fill="#c77b45"/>
+    <g opacity="0.38" stroke="#ff9c43" stroke-width="1">
+      <line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(0)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(10)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(20)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(30)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(40)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(50)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(60)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(70)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(80)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(90)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(100)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(110)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(120)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(130)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(140)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(150)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(160)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(170)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(180)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(190)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(200)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(210)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(220)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(230)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(240)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(250)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(260)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(270)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(280)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(290)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(300)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(310)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(320)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(330)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(340)"/><line x1="0" y1="-64" x2="0" y2="-96" transform="rotate(350)"/>
+    </g>
+  </g>
+</svg>
