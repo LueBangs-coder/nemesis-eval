@@ -5,7 +5,7 @@ Operating contract for Claude Code working in the Nemesis repo.
 **Project:** Nemesis — Python evaluation harness for agentic failure modes.
 **Reference spec:** `BUILD_SPEC.md` (full phase-by-phase plan).
 **Author:** Luis A. Betancourt — Founder & Operator, Onslaught Gaming LLC.
-**Status:** Pre-alpha. Phase 0 in flight.
+**Status:** v0.2.0 in progress. Public at `github.com/LueBangs-coder/nemesis-eval`. PyPI distribution name: `nemesis-eval` (import package and CLI: `nemesis`).
 **Parent project:** Pantheon (private operating context; public architectural writeup available on request).
 
 ---
@@ -69,35 +69,38 @@ Stop and ask Luis before:
 
 ## Current Phase
 
-### Phase 5 — Reporting, artifact, public release — CODE COMPLETE; release gates pending
+### v0.2.0 — Distribution & CI — IN PROGRESS
 
-The code and documentation deliverables are merged-pending on branch
-`phase-5-reporting-release`. Two release actions remain, each a hard
-stop-condition requiring explicit Luis approval:
+The harness is public at `github.com/LueBangs-coder/nemesis-eval` and released
+as `v0.1.0`. The v0.2.0 line makes Nemesis consumable outside this repo:
 
-1. **Tag `v0.1.0`** on GitHub with release notes linking the Pantheon writeup.
-2. **Flip the repo to public** at `github.com/LueBangs-coder/nemesis`.
+- **Real-repository adapter** (`nemesis check`) — runs detectors against a real
+  repository from read-only git state. (merged, PR #3)
+- **GitHub Action + PyPI packaging** — composite `action.yml` wraps
+  `nemesis check`; the distribution was renamed to `nemesis-eval` (the PyPI name
+  `nemesis` was taken) with full metadata and a `py.typed` marker; added a
+  `--fail-on-detect` CI gate. (merged, PR #4)
+- **Tokenless release pipeline** — `.github/workflows/release.yml` publishes to
+  PyPI via Trusted Publishing (OIDC); no API token, no repository secret.
+  (merged, PR #5)
 
-Until both are done by explicit approval, the project is feature-complete but
-private. Do not flip visibility or tag a release without per-operation
-authorization.
+**Remaining (maintainer actions, each a stop-condition requiring approval):**
+1. Configure the PyPI pending publisher + the `pypi` GitHub Environment.
+2. Tag and publish the `v0.2.0` GitHub Release (triggers the first PyPI publish).
 
-**Acceptance gate — verified portions:**
-- `nemesis eval --output report.md` produces a structured Markdown report
-  (per-mode TPR/FPR, evidence, Pantheon link). ✅
-- Fresh-clone install + run works end to end without manual fixes (verified in
-  a temp clone: fresh venv, `pip install -e ".[dev]"`, 59 tests pass, CLI runs). ✅
-- `pytest` → 59 passed. ✅
-- `pre-commit run --all-files` → ruff + black Passed. ✅
-
-**Acceptance gate — pending release approval:**
-- Repo public at `github.com/LueBangs-coder/nemesis`. ⏳
-- README renders on the GitHub web view (verify after public). ⏳
-- `v0.1.0` tagged; release notes link the Pantheon writeup. ⏳
+Until published, v0.2.0 is code-complete on `main` but not yet on PyPI. Do not
+publish or tag a release without per-operation authorization.
 
 ---
 
 ## Closed phases
+
+### Phase 5 — Reporting, artifact, public release — CLOSED
+
+Closed on 2026-06-05. Markdown reporting (`nemesis eval --output report.md`)
+and the fresh-clone acceptance gate were verified; the repo was made public as
+`nemesis-eval` and `v0.1.0` was tagged and released. Superseded by the v0.2.0
+distribution work above.
 
 ### Phase 4 — Eval loop and remaining detectors — CLOSED
 
