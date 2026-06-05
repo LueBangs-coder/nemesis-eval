@@ -3,15 +3,37 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "nemesis"
-version = "0.1.0"
+name = "nemesis-eval"
+version = "0.2.0"
 description = "Python evaluation harness for agentic failure modes."
 requires-python = ">=3.11"
 authors = [
-    { name = "Luis Betancourt", email = "therealonslaughtgaming@gmail.com" },         
+    { name = "Luis Betancourt", email = "therealonslaughtgaming@gmail.com" },
 ]
 license = "MIT"
 readme = "README.md"
+keywords = [
+    "agents",
+    "agentic",
+    "evaluation",
+    "testing",
+    "quality-assurance",
+    "failure-modes",
+    "llm",
+    "ci",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Quality Assurance",
+    "Typing :: Typed",
+]
 dependencies = [
     "PyYAML>=6.0",
 ]
@@ -23,9 +45,22 @@ dev = [
     "black>=23.0",
     "pre-commit>=3.0",
 ]
+release = [
+    "build>=1.0",
+    "twine>=5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/LueBangs-coder/nemesis-eval"
+Repository = "https://github.com/LueBangs-coder/nemesis-eval"
+Issues = "https://github.com/LueBangs-coder/nemesis-eval/issues"
+Documentation = "https://github.com/LueBangs-coder/nemesis-eval/blob/main/BUILD_SPEC.md"
 
 [project.scripts]
 nemesis = "nemesis.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nemesis"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
