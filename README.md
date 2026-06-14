@@ -181,6 +181,29 @@ or set it (e.g. `"0.2.0"`) to install that release from PyPI.
 
 ---
 
+## Scope & limitations
+
+Nemesis has two surfaces, and they cover different ground today:
+
+- **`nemesis eval`** exercises **all 20 detectors** against *synthetic*
+  known-truth runs — a closed test bed where each failure is injected on
+  purpose. This is how the detectors are validated (true-positive and
+  false-positive rates), and why every detector scores well there.
+- **`nemesis check`** runs against a **real** repository, but it can only act
+  on signals that are observable from read-only git state — worktree
+  cleanliness, branch, HEAD, upstream parity — plus the run context you pass in
+  (`--claimed-success`, `--tests-passing`, `--transcript`). Today that means a
+  **subset** of the catalog fires on real repos (for example
+  `agent_declared_success_too_early` and `dirty_worktree_after_closeout`); the
+  remaining detectors depend on richer run context that the collector does not
+  yet derive.
+
+In short: the catalog and the synthetic eval are complete; broadening what
+`nemesis check` can observe on real repositories is active, ongoing work. This
+project does not over-claim what it verifies — that honesty is the point.
+
+---
+
 ## Part of something larger
 
 Nemesis is one guardian in a growing **pantheon** — a body of harnesses built to keep AI systems honest, bounded, and safe. Each guardian owns one part of the problem:
@@ -225,7 +248,12 @@ Founder & Operator, Onslaught Gaming LLC · U.S. Army veteran (Armored Crewman) 
 
 ## License
 
-MIT. See [`LICENSE`](./LICENSE).
+Released under the **MIT License** — see [`LICENSE`](./LICENSE).
+
+Copyright © 2026 Luis A. Betancourt. You're free to use, modify, and
+distribute Nemesis — including commercially — at no cost, for the community.
+The only condition is keeping the copyright and license notice. Ownership of
+the work stays with the author; the freedom to use it is yours.
 
 ---
 
