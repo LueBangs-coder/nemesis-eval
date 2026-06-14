@@ -15,7 +15,8 @@ added without a corresponding case here, so coverage cannot silently regress.
 
 import pytest
 
-import nemesis.detectors  # noqa: F401  (importing registers every detector)
+# Importing from nemesis.detectors.base pulls in the nemesis.detectors package,
+# whose __init__ imports every detector module and registers all 20.
 from nemesis.detectors.base import RunArtifact, all_detectors
 
 # failure_mode_id -> (claimed_success, repo_state) that MUST trip the detector.
